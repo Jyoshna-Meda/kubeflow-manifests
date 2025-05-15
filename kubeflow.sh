@@ -311,7 +311,7 @@ while [ $attempt -le $MAX_RETRIES ]; do
   fi
 
   print_step 26 "Waiting for Pipelines Pods to become Ready (timeout 300s)"
-  if ! kubectl wait --for=condition=Ready pods --all -n $PIPELINE_NS --timeout=3s; then
+  if ! kubectl wait --for=condition=Ready pods --all -n $PIPELINE_NS --timeout=400s; then
     echo "⚠️ Not all pods became ready. Attempting to fix MySQL metadata DB if needed..."
 
     MYSQL_POD=$(kubectl get pods -n $PIPELINE_NS -o name | grep '^pod/mysql' | head -n1)
@@ -338,8 +338,8 @@ while [ $attempt -le $MAX_RETRIES ]; do
           [ -n "$GRPC_POD" ] && kubectl delete $GRPC_POD -n $PIPELINE_NS
           [ -n "$WRITER_POD" ] && kubectl delete $WRITER_POD -n $PIPELINE_NS
 
-          echo "⏳ Waiting for 40s before rechecking..."
-          sleep 100
+          echo "⏳ Waiting for 140s before rechecking..."
+          sleep 140
           fix_attempt=$((fix_attempt + 1))
         else
           echo "✅ metadb has exactly 15 tables. Proceeding..."
