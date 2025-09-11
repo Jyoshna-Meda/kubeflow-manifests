@@ -2,30 +2,8 @@
 
 # Exit immediately if a command exits with a non-zero status
 set -e
-
-# Define the Kustomize version you want to install
-KUSTOMIZE_VERSION="6.5.8"
-
-# Download the tarball from GitHub
-echo "Downloading kustomize v$KUSTOMIZE_VERSION..."
-curl -sLo kustomize.tar.gz "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/v${KUSTOMIZE_VERSION}/kustomize_v${KUSTOMIZE_VERSION}_linux_amd64.tar.gz"
-
-# Extract the tarball
-echo "Extracting kustomize..."
-tar -xzf kustomize.tar.gz
-
-# Move the binary to /usr/local/bin (may require sudo)
-echo "Installing kustomize..."
-chmod +x kustomize
+curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
 sudo mv kustomize /usr/local/bin/
-
-# Cleanup
-rm -f kustomize.tar.gz
-
-# Verify installation
-echo "Kustomize version installed:"
-kustomize version
-
 # ---------------------------------------------
 # Script to deploy cert-manager, Istio, and oauth2-proxy
 # Only proceeds if all Pods in each namespace are Running & Ready
